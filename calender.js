@@ -16,17 +16,21 @@ function main(duration, c1, c2) {
 }
 
 function checkTimeAvailability(t, c1, c2) {
-     // t => time (string), c1,c2 => array 
-    c1 = c1.every(element => element[0] !== t);
-    c2 = c2.every(element => element[0] !== t);
-    return (c1 && c2);
+     try {
+         c1 = c1.every(element => element[0] !== t);
+         c2 = c2.every(element => element[0] !== t);
+         return (c1 && c2);
+     } catch(e) {
+         console.log("checkTimeAvailability(t, c1, c2) expected object[Array] for c1 or c2");
+
+     } 
 }
 
 function getAvailableTime(st, c1, c2, duration) {
     const d = new Date();
     const hrs = parseInt(st.slice(0, 2), 10);
     const mins = parseInt(st.slice(3), 10);
-    const m = mins + duration;
+    const m = mins + parseInt(duration, 10);
     
     // Set meeting end time (et)
     d.setHours(hrs) && d.setMinutes(m);
@@ -62,7 +66,7 @@ function addZero(i) {
 }
 
 // initialize application
-main(30, cldr1, cldr2);
+main("30", "cldr1", cldr2);
 
 
 
