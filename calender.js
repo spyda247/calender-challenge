@@ -5,12 +5,13 @@ const cldr2 = [["10:30", "11:30"], ["12:00", "12:30"], ["13:00", "13:30"], ['11:
 
 function main(duration, c1, c2) {
     const mh = meetingHours(duration, 8, 17);
-    let at = [];
+    let at = mh.map(e => getAvailableTime(e, c1, c2, duration)).filter(e => e.length !== 0);
+    /* let at = [];
     mh.forEach(e => {
         let gat = getAvailableTime(e, c1, c2, duration);
         if (gat.length !== 0)
             at.push(gat);
-    });
+    }); */
     console.log(at);
 }
 
