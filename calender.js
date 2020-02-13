@@ -66,7 +66,7 @@ function addZero(i) {
 }
 
 // initialize application
-main("30", "cldr1", cldr2);
+main("30", cldr1, cldr2);
 
 
 
