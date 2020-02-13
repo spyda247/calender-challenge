@@ -12,15 +12,15 @@ Write a program to output to console a list(array) of possible meeting times e,g
 
 
 // Inputs
-const cldr1 = [['08:00', '08:30'], ["10:00", "10:30"], ['11:30, 12:00'], ["12:00", "12:30"], ["13:00", "13:30"] ];
+const cldr1 = [['08:00', '08:30'], ["10:00", "10:30"], ['11:30, 12:00'], ["12:00", "12:30"], ["13:00", "13:30"]];
 const cldr2 = [["10:30", "11:30"], ["12:00", "12:30"], ["13:00", "13:30"], ['11:30, 12:00'], ['13:30', '14:00'],
-    ['14:00', '14:30'],['14:30', '15:00']];
+['14:00', '14:30'], ['14:30', '15:00']];
 
 /*** Begin code here */
 function main(duration, c1, c2) {
     const mh = meetingHours(duration, 8, 17);
     // at => avaialble times
-    let at = mh.map(e => getAvailableTime(e, c1, c2, duration)).filter(e => e.length !== 0);   
+    let at = mh.map(e => getAvailableTime(e, c1, c2, duration)).filter(e => e.length !== 0);
     console.log(at);
 }
 
@@ -37,8 +37,8 @@ function main(duration, c1, c2) {
  * (i.e not in list) and false otherwise
  */
 function checkTimeAvailability(t, c1, c2) {
-    c1 = c1.every(element => element[0] != t);
-    c2 = c2.every(element => element[0] != t);
+    c1 = c1.every(element => element[0] !== t);
+    c2 = c2.every(element => element[0] !== t);
     return (c1 && c2);
 }
 
@@ -55,15 +55,14 @@ function checkTimeAvailability(t, c1, c2) {
  * (i.e not in list) or an empty array otherwise
  */
 function getAvailableTime(st, c1, c2, duration) {
-    
-    d = new Date();
-    hrs = parseInt(st.slice(0, 2));
-    mins = parseInt(st.slice(3));
-    m = mins + duration;
 
+    const d = new Date();
+    const hrs = parseInt(st.slice(0, 2), 10);
+    const mins = parseInt(st.slice(3), 10);
+    const m = mins + duration;
     // Set meeting end time (et)
     d.setHours(hrs) && d.setMinutes(m);
-    et = d.toTimeString();
+    const et = d.toTimeString();
 
     //Do check to see if both proposed start times and end times are valid 
     // if so build the array and return it as value
@@ -91,7 +90,7 @@ function meetingHours(d, st, et) {
     // wh => official work hours(hrs)
     let hr = "";
     let min = "";
-    a = [];
+    let a = [];
     for (let i = st; i < et; i++) {
         hr = addZero(i);
         for (let j = 0; j < 60; j = j + d) {

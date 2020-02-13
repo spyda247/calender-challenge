@@ -17,23 +17,23 @@ function main(duration, c1, c2) {
 
 function checkTimeAvailability(t, c1, c2) {
      // t => time (string), c1,c2 => array 
-    c1 = c1.every(element => element[0] != t);
-    c2 = c2.every(element => element[0] != t);
+    c1 = c1.every(element => element[0] !== t);
+    c2 = c2.every(element => element[0] !== t);
     return (c1 && c2);
 }
 
-function getAvailableTime(ts, c1, c2, duration) {
-    d = new Date();
-    hrs = parseInt(ts.slice(0, 2));
-    mins = parseInt(ts.slice(3));
-    m = mins + duration;
+function getAvailableTime(st, c1, c2, duration) {
+    const d = new Date();
+    const hrs = parseInt(st.slice(0, 2), 10);
+    const mins = parseInt(st.slice(3), 10);
+    const m = mins + duration;
     
-    // Set meeting end time (te)
+    // Set meeting end time (et)
     d.setHours(hrs) && d.setMinutes(m);
-    te = d.toTimeString();
+    const et = d.toTimeString();
 
-    if(checkTimeAvailability(ts, c1, c2) && checkTimeAvailability(te, c1, c2)) {
-        return [ts, te.slice(0, 5)];
+    if(checkTimeAvailability(st, c1, c2) && checkTimeAvailability(et, c1, c2)) {
+        return [st, et.slice(0, 5)];
     } else {
         return [];  
     }
@@ -42,7 +42,7 @@ function getAvailableTime(ts, c1, c2, duration) {
 function meetingHours(d, st, et) {
     let hr = "";
     let min = "";
-    a = [];
+    let a = [];
     for(let i = st; i < et; i++) {
         hr = addZero(i);
         for (let j = 0; j < 60; j= j + d) {
