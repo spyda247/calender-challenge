@@ -1,29 +1,42 @@
 // Inputs
-const cldr1 = [['08:00', '08:30'], ["10:00", "10:30"], ['11:30, 12:00'], ["12:00", "12:30"], ["13:00", "13:30"]];
-const cldr2 = [["10:30", "11:30"], ["12:00", "12:30"], ["13:00", "13:30"], ['11:30, 12:00'], ['13:30', '14:00'],
-['14:00', '14:30'], ['14:30', '15:00']];
+const cldr1 = [
+    ['08:00', '08:30'],
+    ["10:00", "10:30"],
+    ['11:30, 12:00'],
+    ["12:00", "12:30"],
+    ["13:00", "13:30"]
+];
+const cldr2 = [
+    ["10:30", "11:30"],
+    ["12:00", "12:30"],
+    ["13:00", "13:30"],
+    ['11:30, 12:00'],
+    ['13:30', '14:00'],
+    ['14:00', '14:30'],
+    ['14:30', '15:00']
+];
 
 function main(duration, c1, c2) {
-    const mh = meetingHours(duration, 8, 17);
-    let at = mh.map(e => getAvailableTime(e, c1, c2, duration)).filter(e => e.length !== 0);
-    /* let at = [];
-    mh.forEach(e => {
-        let gat = getAvailableTime(e, c1, c2, duration);
-        if (gat.length !== 0)
-            at.push(gat);
-    }); */
-    console.log(at);
+    if (checkInputs(c1, c2)) {
+        const mh = meetingHours(duration, 8, 17);
+        let at = mh.map(e => getAvailableTime(e, c1, c2, duration)).filter(e => e.length !== 0);
+        /* let at = [];
+        mh.forEach(e => {
+            let gat = getAvailableTime(e, c1, c2, duration);
+            if (gat.length !== 0)
+                at.push(gat);
+        }); */
+        console.log(at);
+    } else {
+        console.log("Wrong input type");
+    }
+
 }
 
 function checkTimeAvailability(t, c1, c2) {
-     try {
-         c1 = c1.every(element => element[0] !== t);
-         c2 = c2.every(element => element[0] !== t);
-         return (c1 && c2);
-     } catch(e) {
-         console.log("checkTimeAvailability(t, c1, c2) expected object[Array] for c1 or c2");
-
-     } 
+    c1 = c1.every(element => element[0] !== t);
+    c2 = c2.every(element => element[0] !== t);
+    return (c1 && c2);
 }
 
 function getAvailableTime(st, c1, c2, duration) {
@@ -31,15 +44,15 @@ function getAvailableTime(st, c1, c2, duration) {
     const hrs = parseInt(st.slice(0, 2), 10);
     const mins = parseInt(st.slice(3), 10);
     const m = mins + parseInt(duration, 10);
-    
+
     // Set meeting end time (et)
     d.setHours(hrs) && d.setMinutes(m);
     const et = d.toTimeString();
 
-    if(checkTimeAvailability(st, c1, c2) && checkTimeAvailability(et, c1, c2)) {
+    if (checkTimeAvailability(st, c1, c2) && checkTimeAvailability(et, c1, c2)) {
         return [st, et.slice(0, 5)];
     } else {
-        return [];  
+        return [];
     }
 }
 
@@ -47,9 +60,9 @@ function meetingHours(d, st, et) {
     let hr = "";
     let min = "";
     let a = [];
-    for(let i = st; i < et; i++) {
+    for (let i = st; i < et; i++) {
         hr = addZero(i);
-        for (let j = 0; j < 60; j= j + d) {
+        for (let j = 0; j < 60; j = j + d) {
             min = addZero(j);
             a.push(hr + ':' + min);
         }
@@ -59,14 +72,18 @@ function meetingHours(d, st, et) {
 
 function addZero(i) {
     if (i < 10) {
-       return '0' + i;
+        return '0' + i;
     } else {
         return i;
+    }
+}
+function checkInputs(c1, c2) {
+    if (c1.length !== 0 && c2.length !== 0 && (typeof c1 === 'object' && typeof c2 === 'object')) {
+        return true;
+    } else {
+        return false;
     }
 }
 
 // initialize application
 main("30", cldr1, cldr2);
-
-
-
